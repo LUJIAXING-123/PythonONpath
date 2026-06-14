@@ -152,17 +152,17 @@ class MultiCalculator:
         style.configure('TButton', font=('Microsoft YaHei', 11))
         style.configure('TEntry', font=('Microsoft YaHei', 12))
 
-        self.root.configure(bg=self.bg_color)
+        self.root.configure(background=self.bg_color)
 
     def _build_ui(self):
         # 顶部标题栏
-        title_bar = tk.Frame(self.root, bg=self.accent_color, height=36)
+        title_bar = tk.Frame(self.root, background=self.accent_color, height=36)
         title_bar.pack(fill='x', side='top')
         title_bar.pack_propagate(False)
-        tk.Label(title_bar, text="🧮 多功能计算器", bg=self.accent_color,
-                 fg='white', font=('Microsoft YaHei', 12, 'bold')).pack(side='left', padx=12)
+        tk.Label(title_bar, text="🧮 多功能计算器", background=self.accent_color,
+                 foreground='white', font=('Microsoft YaHei', 12, 'bold')).pack(side='left', padx=12)
         tk.Label(title_bar, text=f"{'📱' if self.is_mobile else '💻'}",
-                 bg=self.accent_color, fg='white',
+                 background=self.accent_color, foreground='white',
                  font=('Microsoft YaHei', 12)).pack(side='right', padx=12)
 
         self.nb = ttk.Notebook(self.root)
@@ -195,14 +195,14 @@ class MultiCalculator:
         self._build_stats(self.tab_stat)
 
         # 底部状态栏
-        status = tk.Frame(self.root, bg=self.panel_color, height=24)
+        status = tk.Frame(self.root, background=self.panel_color, height=24)
         status.pack(fill='x', side='bottom')
         status.pack_propagate(False)
-        self.status_lbl = tk.Label(status, text="  就绪", bg=self.panel_color,
-                                   fg='#cccccc', font=('Microsoft YaHei', 8))
+        self.status_lbl = tk.Label(status, text="  就绪", background=self.panel_color,
+                                   foreground='#cccccc', font=('Microsoft YaHei', 8))
         self.status_lbl.pack(side='left')
-        clock = tk.Label(status, text="", bg=self.panel_color,
-                         fg='#cccccc', font=('Microsoft YaHei', 8))
+        clock = tk.Label(status, text="", background=self.panel_color,
+                         foreground='#cccccc', font=('Microsoft YaHei', 8))
         clock.pack(side='right', padx=8)
         self._tick_clock(clock)
 
@@ -217,13 +217,13 @@ class MultiCalculator:
     # 通用按钮
     # --------------------------------------------------------
 
-    def _make_button(self, parent, text, command, bg=None, fg='white',
+    def _make_button(self, parent, text, command, background=None, foreground='white',
                      width=None, height=None, col=None, row=None, span=1, pad=3):
         b = tk.Button(parent, text=text, command=command,
-                      bg=bg or self.btn_color, fg=fg,
+                      background=bg or self.btn_color, foreground=fg,
                       activebackground=self.btn_hover, activeforeground='white',
                       font=('Microsoft YaHei', 13 if not self.is_mobile else 11, 'bold'),
-                      relief='flat', bd=0, cursor='hand2')
+                      relief='solid', bd=0, cursor='hand1')
         if width:
             b.config(width=width)
         if height:
@@ -241,24 +241,24 @@ class MultiCalculator:
         parent.rowconfigure(2, weight=1)
 
         # 显示屏
-        top = tk.Frame(parent, bg=self.bg_color)
+        top = tk.Frame(parent, background=self.bg_color)
         top.grid(row=0, column=0, sticky='nsew', padx=8, pady=(8, 4))
         top.columnconfigure(0, weight=1)
 
         self.basic_expr = tk.Label(top, text="", anchor='e',
-                                   bg=self.bg_color, fg='#888888',
+                                   background=self.bg_color, foreground='#888888',
                                    font=('Microsoft YaHei', 11))
         self.basic_expr.grid(row=0, column=0, sticky='ew')
 
         self.basic_display = tk.Label(top, text="0", anchor='e',
-                                      bg=self.bg_color, fg='white',
+                                      background=self.bg_color, foreground='white',
                                       font=('Microsoft YaHei', 28 if not self.is_mobile else 22, 'bold'))
         self.basic_display.grid(row=1, column=0, sticky='ew')
 
         self.basic_value = ""
 
         # 按钮区
-        btn_frame = tk.Frame(parent, bg=self.bg_color)
+        btn_frame = tk.Frame(parent, background=self.bg_color)
         btn_frame.grid(row=2, column=0, sticky='nsew', padx=6, pady=4)
         for i in range(4):
             btn_frame.columnconfigure(i, weight=1)
@@ -288,26 +288,26 @@ class MultiCalculator:
                     cmd = compute
                 else:
                     cmd = set_val(text)
-                self._make_button(btn_frame, text, cmd, bg=color, row=r, col=c)
+                self._make_button(btn_frame, text, cmd, background=color, row=r, col=c)
 
         # 历史记录
-        history_top = tk.Frame(parent, bg=self.bg_color)
+        history_top = tk.Frame(parent, background=self.bg_color)
         history_top.grid(row=3, column=0, sticky='ew', padx=8, pady=4)
-        tk.Label(history_top, text="📜 历史记录", bg=self.bg_color,
-                 fg=self.accent_color, font=('Microsoft YaHei', 10, 'bold')).pack(side='left')
+        tk.Label(history_top, text="📜 历史记录", background=self.bg_color,
+                 foreground=self.accent_color, font=('Microsoft YaHei', 10, 'bold')).pack(side='left')
         tk.Button(history_top, text="清空", command=self._clear_basic_history,
-                  bg=self.btn_color, fg='white', relief='flat', cursor='hand2',
+                  background=self.btn_color, foreground='white', relief='solid', cursor='hand1',
                   font=('Microsoft YaHei', 9)).pack(side='right')
 
-        history_frame = tk.Frame(parent, bg=self.bg_color, height=120)
+        history_frame = tk.Frame(parent, background=self.bg_color, height=120)
         history_frame.grid(row=4, column=0, sticky='nsew', padx=8, pady=(0, 8))
         history_frame.grid_propagate(False)
         parent.rowconfigure(4, weight=0)
 
-        self.basic_history = tk.Listbox(history_frame, bg='#1e1e1e', fg='white',
+        self.basic_history = tk.Listbox(history_frame, background='#1e1e1e', foreground='white',
                                         font=('Microsoft YaHei', 10),
                                         selectbackground=self.accent_color,
-                                        relief='flat', bd=0, activestyle='none')
+                                        relief='solid', bd=0, activestyle='none')
         sb = ttk.Scrollbar(history_frame, command=self.basic_history.yview)
         self.basic_history.config(yscrollcommand=sb.set)
         self.basic_history.pack(side='left', fill='both', expand=True)
@@ -372,32 +372,32 @@ class MultiCalculator:
         parent.columnconfigure(0, weight=1)
         parent.rowconfigure(2, weight=1)
 
-        top = tk.Frame(parent, bg=self.bg_color)
+        top = tk.Frame(parent, background=self.bg_color)
         top.grid(row=0, column=0, sticky='nsew', padx=8, pady=(8, 4))
         top.columnconfigure(0, weight=1)
 
-        self.sci_expr = tk.Label(top, text="", anchor='e', bg=self.bg_color,
-                                 fg='#888888', font=('Microsoft YaHei', 11))
+        self.sci_expr = tk.Label(top, text="", anchor='e', background=self.bg_color,
+                                 foreground='#888888', font=('Microsoft YaHei', 11))
         self.sci_expr.grid(row=0, column=0, sticky='ew')
 
-        self.sci_display = tk.Label(top, text="0", anchor='e', bg=self.bg_color,
-                                    fg='white',
+        self.sci_display = tk.Label(top, text="0", anchor='e', background=self.bg_color,
+                                    foreground='white',
                                     font=('Microsoft YaHei', 24 if not self.is_mobile else 20, 'bold'))
         self.sci_display.grid(row=1, column=0, sticky='ew')
 
         self.sci_value = ""
         self.angle_mode = tk.StringVar(value="DEG")
-        mode_bar = tk.Frame(parent, bg=self.bg_color)
+        mode_bar = tk.Frame(parent, background=self.bg_color)
         mode_bar.grid(row=1, column=0, sticky='ew', padx=8)
-        tk.Label(mode_bar, text="角度:", bg=self.bg_color, fg='white',
+        tk.Label(mode_bar, text="角度:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 10)).pack(side='left')
         for m in ['DEG', 'RAD']:
             tk.Radiobutton(mode_bar, text=m, variable=self.angle_mode, value=m,
-                           bg=self.bg_color, fg='white', selectcolor=self.btn_color,
+                           background=self.bg_color, foreground='white', selectcolor=self.btn_color,
                            activebackground=self.bg_color, activeforeground='white',
-                           font=('Microsoft YaHei', 10), cursor='hand2').pack(side='left')
+                           font=('Microsoft YaHei', 10), cursor='hand1').pack(side='left')
 
-        btn_frame = tk.Frame(parent, bg=self.bg_color)
+        btn_frame = tk.Frame(parent, background=self.bg_color)
         btn_frame.grid(row=2, column=0, sticky='nsew', padx=6, pady=4)
         for i in range(5):
             btn_frame.columnconfigure(i, weight=1)
@@ -454,16 +454,16 @@ class MultiCalculator:
         ]
         for r, row in enumerate(rows):
             for c, (text, color, cmd) in enumerate(row):
-                self._make_button(btn_frame, text, cmd, bg=color, row=r, col=c, pad=2)
+                self._make_button(btn_frame, text, cmd, background=color, row=r, col=c, pad=2)
 
         # 快捷功能
-        quick = tk.Frame(parent, bg=self.bg_color)
+        quick = tk.Frame(parent, background=self.bg_color)
         quick.grid(row=3, column=0, sticky='ew', padx=8, pady=4)
         for text, fn in [('随机数', self._sci_random), ('绝对值', self._sci_abs),
                          ('四舍五入', self._sci_round), ('取整', self._sci_int),
                          ('复制结果', self._sci_copy)]:
-            tk.Button(quick, text=text, command=fn, bg=self.btn_color, fg='white',
-                      relief='flat', cursor='hand2',
+            tk.Button(quick, text=text, command=fn, background=self.btn_color, foreground='white',
+                      relief='solid', cursor='hand1',
                       font=('Microsoft YaHei', 9)).pack(side='left', padx=2, expand=True, fill='x')
 
     def _sci_append(self, ch):
@@ -578,7 +578,7 @@ class MultiCalculator:
             parent.rowconfigure(r, weight=0)
 
         # 类型选择
-        tk.Label(parent, text="选择类别:", bg=self.bg_color, fg='white',
+        tk.Label(parent, text="选择类别:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=0, column=0, sticky='w',
                                                     padx=12, pady=(12, 4))
 
@@ -590,15 +590,15 @@ class MultiCalculator:
         cat_combo.bind('<<ComboboxSelected>>', lambda e: self._update_units())
 
         # 输入单位
-        frm1 = tk.Frame(parent, bg=self.bg_color)
+        frm1 = tk.Frame(parent, background=self.bg_color)
         frm1.grid(row=2, column=0, sticky='ew', padx=12, pady=4)
         frm1.columnconfigure(0, weight=2)
         frm1.columnconfigure(1, weight=3)
 
-        tk.Label(frm1, text="输入:", bg=self.bg_color, fg='white',
+        tk.Label(frm1, text="输入:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 10)).grid(row=0, column=0, columnspan=2, sticky='w')
-        self.unit_input = tk.Entry(frm1, bg='#1e1e1e', fg='white',
-                                   insertbackground='white', relief='flat',
+        self.unit_input = tk.Entry(frm1, background='#1e1e1e', foreground='white',
+                                   insertbackground='white', relief='solid',
                                    font=('Microsoft YaHei', 14, 'bold'))
         self.unit_input.grid(row=1, column=0, sticky='ew', ipady=6)
         self.unit_from = tk.StringVar()
@@ -609,14 +609,14 @@ class MultiCalculator:
         self.unit_input.bind('<KeyRelease>', lambda e: self._do_convert())
 
         # 输出单位
-        frm2 = tk.Frame(parent, bg=self.bg_color)
+        frm2 = tk.Frame(parent, background=self.bg_color)
         frm2.grid(row=3, column=0, sticky='ew', padx=12, pady=4)
         frm2.columnconfigure(0, weight=2)
         frm2.columnconfigure(1, weight=3)
 
-        tk.Label(frm2, text="转换为:", bg=self.bg_color, fg='white',
+        tk.Label(frm2, text="转换为:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 10)).grid(row=0, column=0, columnspan=2, sticky='w')
-        self.unit_output = tk.Label(frm2, text="0", anchor='w', bg='#1e1e1e', fg='white',
+        self.unit_output = tk.Label(frm2, text="0", anchor='w', background='#1e1e1e', foreground='white',
                                     font=('Microsoft YaHei', 14, 'bold'))
         self.unit_output.grid(row=1, column=0, sticky='nsew', ipady=6)
         self.unit_output.configure(padx=6)
@@ -630,15 +630,15 @@ class MultiCalculator:
 
         # 温度换算（独立处理，因非线性）
         temp_frame = tk.LabelFrame(parent, text="温度换算 (独立)",
-                                   bg=self.bg_color, fg=self.accent_color,
+                                   background=self.bg_color, foreground=self.accent_color,
                                    font=('Microsoft YaHei', 10, 'bold'),
                                    bd=1, relief='solid')
         temp_frame.grid(row=4, column=0, sticky='ew', padx=12, pady=8)
         for i in range(4):
             temp_frame.columnconfigure(i, weight=1)
 
-        self.temp_val = tk.Entry(temp_frame, bg='#1e1e1e', fg='white',
-                                 insertbackground='white', relief='flat',
+        self.temp_val = tk.Entry(temp_frame, background='#1e1e1e', foreground='white',
+                                 insertbackground='white', relief='solid',
                                  font=('Microsoft YaHei', 12))
         self.temp_val.grid(row=0, column=0, columnspan=4, sticky='ew',
                            padx=6, pady=6, ipady=4)
@@ -647,16 +647,16 @@ class MultiCalculator:
 
         for i, (label, key) in enumerate([("摄氏度(°C)", "C"), ("华氏度(°F)", "F"),
                                            ("开尔文(K)", "K"), ("列氏度(°Ré)", "R")]):
-            tk.Label(temp_frame, text=label, bg=self.bg_color, fg='#cccccc',
+            tk.Label(temp_frame, text=label, background=self.bg_color, foreground='#cccccc',
                      font=('Microsoft YaHei', 9)).grid(row=1, column=i, padx=4, pady=(6, 0))
-            lbl = tk.Label(temp_frame, text="--", bg=self.bg_color, fg='white',
+            lbl = tk.Label(temp_frame, text="--", background=self.bg_color, foreground='white',
                            font=('Microsoft YaHei', 11, 'bold'))
             lbl.grid(row=2, column=i, padx=4, pady=(0, 6))
             setattr(self, f'temp_{key}', lbl)
 
         # 常用换算参考
-        ref = tk.LabelFrame(parent, text="快速参考", bg=self.bg_color,
-                            fg=self.accent_color,
+        ref = tk.LabelFrame(parent, text="快速参考", background=self.bg_color,
+                            foreground=self.accent_color,
                             font=('Microsoft YaHei', 10, 'bold'), bd=1, relief='solid')
         ref.grid(row=5, column=0, sticky='nsew', padx=12, pady=8)
         ref.columnconfigure(0, weight=1)
@@ -671,7 +671,7 @@ class MultiCalculator:
             "1 斤 = 500 克",
         ]
         for i, text in enumerate(refs):
-            tk.Label(ref, text=text, bg=self.bg_color, fg='#cccccc',
+            tk.Label(ref, text=text, background=self.bg_color, foreground='#cccccc',
                      font=('Microsoft YaHei', 9)).grid(row=i // 2, column=i % 2,
                                                         sticky='w', padx=8, pady=2)
 
@@ -752,25 +752,25 @@ class MultiCalculator:
         self._build_custom_expr(t5)
 
     def _entry_row(self, parent, label, default="", row=0):
-        tk.Label(parent, text=label, bg=self.bg_color, fg='white',
+        tk.Label(parent, text=label, background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=row, column=0,
                                                     sticky='e', padx=6, pady=6)
-        e = tk.Entry(parent, bg='#1e1e1e', fg='white', insertbackground='white',
-                     relief='flat', font=('Microsoft YaHei', 12))
+        e = tk.Entry(parent, background='#1e1e1e', foreground='white', insertbackground='white',
+                     relief='solid', font=('Microsoft YaHei', 12))
         e.grid(row=row, column=1, sticky='ew', padx=6, pady=6, ipady=4)
         e.insert(0, default)
         return e
 
     def _build_linear1(self, parent):
-        parent.configure(bg=self.bg_color)
+        parent.configure(background=self.bg_color)
         parent.columnconfigure(1, weight=1)
         tk.Label(parent, text="方程形式: a·x + b = 0",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 12, 'bold')).grid(row=0, column=0, columnspan=2,
                                                            pady=(12, 8))
         e_a = self._entry_row(parent, "a =", "2", row=1)
         e_b = self._entry_row(parent, "b =", "-6", row=2)
-        result_lbl = tk.Label(parent, text="x = ?", bg=self.bg_color, fg='white',
+        result_lbl = tk.Label(parent, text="x = ?", background=self.bg_color, foreground='white',
                               font=('Microsoft YaHei', 14, 'bold'))
         result_lbl.grid(row=3, column=0, columnspan=2, pady=12)
 
@@ -790,17 +790,17 @@ class MultiCalculator:
         self._solve_btn(parent, solve, 4)
 
     def _build_quadratic(self, parent):
-        parent.configure(bg=self.bg_color)
+        parent.configure(background=self.bg_color)
         parent.columnconfigure(1, weight=1)
         tk.Label(parent, text="方程形式: a·x² + b·x + c = 0",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 12, 'bold')).grid(row=0, column=0, columnspan=2,
                                                            pady=(12, 8))
         e_a = self._entry_row(parent, "a =", "1", row=1)
         e_b = self._entry_row(parent, "b =", "-5", row=2)
         e_c = self._entry_row(parent, "c =", "6", row=3)
         result_lbl = tk.Label(parent, text="x₁ = ?, x₂ = ?",
-                              bg=self.bg_color, fg='white',
+                              background=self.bg_color, foreground='white',
                               font=('Microsoft YaHei', 13, 'bold'))
         result_lbl.grid(row=4, column=0, columnspan=2, pady=12)
 
@@ -831,10 +831,10 @@ class MultiCalculator:
         self._solve_btn(parent, solve, 5)
 
     def _build_linear2(self, parent):
-        parent.configure(bg=self.bg_color)
+        parent.configure(background=self.bg_color)
         parent.columnconfigure(1, weight=1)
         tk.Label(parent, text="方程组:\n a₁·x + b₁·y = c₁\n a₂·x + b₂·y = c₂",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 11, 'bold')).grid(row=0, column=0, columnspan=2,
                                                            pady=(12, 8))
         e_a1 = self._entry_row(parent, "a₁ =", "1", row=1)
@@ -844,7 +844,7 @@ class MultiCalculator:
         e_b2 = self._entry_row(parent, "b₂ =", "-1", row=5)
         e_c2 = self._entry_row(parent, "c₂ =", "1", row=6)
         result_lbl = tk.Label(parent, text="x = ?, y = ?",
-                              bg=self.bg_color, fg='white',
+                              background=self.bg_color, foreground='white',
                               font=('Microsoft YaHei', 13, 'bold'))
         result_lbl.grid(row=7, column=0, columnspan=2, pady=12)
 
@@ -866,17 +866,17 @@ class MultiCalculator:
         self._solve_btn(parent, solve, 8)
 
     def _build_cubic(self, parent):
-        parent.configure(bg=self.bg_color)
+        parent.configure(background=self.bg_color)
         parent.columnconfigure(1, weight=1)
         tk.Label(parent, text="方程: a·x³ + b·x² + c·x + d = 0",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 12, 'bold')).grid(row=0, column=0, columnspan=2,
                                                            pady=(12, 8))
         e_a = self._entry_row(parent, "a =", "1", row=1)
         e_b = self._entry_row(parent, "b =", "-6", row=2)
         e_c = self._entry_row(parent, "c =", "11", row=3)
         e_d = self._entry_row(parent, "d =", "-6", row=4)
-        result_lbl = tk.Label(parent, text="", bg=self.bg_color, fg='white',
+        result_lbl = tk.Label(parent, text="", background=self.bg_color, foreground='white',
                               font=('Microsoft YaHei', 11, 'bold'), justify='left')
         result_lbl.grid(row=5, column=0, columnspan=2, pady=12)
 
@@ -925,39 +925,39 @@ class MultiCalculator:
         self._solve_btn(parent, solve, 6)
 
     def _build_custom_expr(self, parent):
-        parent.configure(bg=self.bg_color)
+        parent.configure(background=self.bg_color)
         parent.columnconfigure(0, weight=1)
         tk.Label(parent, text="自定义表达式计算 (支持变量 x)",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 11, 'bold')).pack(pady=(12, 8))
         tips = tk.Label(parent,
                         text="函数: sin, cos, tan, log, log10, sqrt, exp, abs, factorial, pow\n"
                              "常量: pi, e  |  运算符: + - * / ** ( )  |  示例: sin(pi/2)+x**2",
-                        bg=self.bg_color, fg='#888888', font=('Microsoft YaHei', 9),
+                        background=self.bg_color, foreground='#888888', font=('Microsoft YaHei', 9),
                         justify='left')
         tips.pack(fill='x', padx=12)
 
-        frm = tk.Frame(parent, bg=self.bg_color)
+        frm = tk.Frame(parent, background=self.bg_color)
         frm.pack(fill='x', padx=12, pady=8)
         frm.columnconfigure(1, weight=1)
-        tk.Label(frm, text="表达式:", bg=self.bg_color, fg='white',
+        tk.Label(frm, text="表达式:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=0, column=0, sticky='e', padx=4)
-        self.custom_expr = tk.Entry(frm, bg='#1e1e1e', fg='white',
-                                    insertbackground='white', relief='flat',
+        self.custom_expr = tk.Entry(frm, background='#1e1e1e', foreground='white',
+                                    insertbackground='white', relief='solid',
                                     font=('Microsoft YaHei', 12))
         self.custom_expr.grid(row=0, column=1, sticky='ew', ipady=4, padx=4)
         self.custom_expr.insert(0, "sin(x) + x**2 / 4")
 
-        tk.Label(frm, text="x =", bg=self.bg_color, fg='white',
+        tk.Label(frm, text="x =", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=1, column=0, sticky='e', padx=4)
-        self.custom_x = tk.Entry(frm, bg='#1e1e1e', fg='white',
-                                 insertbackground='white', relief='flat',
+        self.custom_x = tk.Entry(frm, background='#1e1e1e', foreground='white',
+                                 insertbackground='white', relief='solid',
                                  font=('Microsoft YaHei', 12))
         self.custom_x.grid(row=1, column=1, sticky='ew', ipady=4, padx=4)
         self.custom_x.insert(0, "2")
 
         self.custom_result = tk.Label(parent, text="结果 = --",
-                                      bg=self.bg_color, fg='white',
+                                      background=self.bg_color, foreground='white',
                                       font=('Microsoft YaHei', 14, 'bold'))
         self.custom_result.pack(pady=12)
 
@@ -985,9 +985,9 @@ class MultiCalculator:
 
     def _solve_btn(self, parent, cmd, row=None, pack=False):
         b = tk.Button(parent, text="✓ 求解 / 计算", command=cmd,
-                      bg=self.btn_eq, fg='white',
+                      background=self.btn_eq, foreground='white',
                       activebackground=self.accent_color, activeforeground='white',
-                      font=('Microsoft YaHei', 12, 'bold'), relief='flat', cursor='hand2',
+                      font=('Microsoft YaHei', 12, 'bold'), relief='solid', cursor='hand1',
                       padx=20, pady=8)
         if pack:
             b.pack(pady=8)
@@ -1001,24 +1001,24 @@ class MultiCalculator:
         parent.columnconfigure(0, weight=1)
 
         tk.Label(parent, text="📊 进制转换器",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 14, 'bold')).pack(pady=(12, 4))
 
         # 输入区
-        in_frame = tk.Frame(parent, bg=self.bg_color)
+        in_frame = tk.Frame(parent, background=self.bg_color)
         in_frame.pack(fill='x', padx=12, pady=8)
         in_frame.columnconfigure(1, weight=1)
 
-        tk.Label(in_frame, text="输入数字:", bg=self.bg_color, fg='white',
+        tk.Label(in_frame, text="输入数字:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=0, column=0, sticky='e', padx=4, pady=4)
-        self.base_input = tk.Entry(in_frame, bg='#1e1e1e', fg='white',
-                                   insertbackground='white', relief='flat',
+        self.base_input = tk.Entry(in_frame, background='#1e1e1e', foreground='white',
+                                   insertbackground='white', relief='solid',
                                    font=('Microsoft YaHei', 13))
         self.base_input.grid(row=0, column=1, sticky='ew', ipady=6, padx=4)
         self.base_input.insert(0, "255")
         self.base_input.bind('<KeyRelease>', lambda e: self._do_baseconv())
 
-        tk.Label(in_frame, text="源进制:", bg=self.bg_color, fg='white',
+        tk.Label(in_frame, text="源进制:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=1, column=0, sticky='e', padx=4, pady=4)
         self.base_from = tk.StringVar(value="十进制")
         combo1 = ttk.Combobox(in_frame, textvariable=self.base_from,
@@ -1033,24 +1033,24 @@ class MultiCalculator:
         bases = [("二进制 (BIN)", 2), ("八进制 (OCT)", 8), ("十进制 (DEC)", 10),
                  ("十六进制 (HEX)", 16), ("三十二进制", 32), ("六十四进制", 64)]
 
-        out_frame = tk.Frame(parent, bg=self.bg_color)
+        out_frame = tk.Frame(parent, background=self.bg_color)
         out_frame.pack(fill='both', expand=True, padx=12, pady=8)
         out_frame.columnconfigure(0, weight=1)
 
         for i, (name, base) in enumerate(bases):
-            row_frame = tk.Frame(out_frame, bg='#1e1e1e')
+            row_frame = tk.Frame(out_frame, background='#1e1e1e')
             row_frame.grid(row=i, column=0, sticky='ew', pady=3)
             row_frame.columnconfigure(1, weight=1)
-            tk.Label(row_frame, text=name, bg='#1e1e1e', fg=self.accent_color,
+            tk.Label(row_frame, text=name, background='#1e1e1e', foreground=self.accent_color,
                      font=('Microsoft YaHei', 10, 'bold'), width=16,
                      anchor='w').grid(row=0, column=0, padx=6, pady=4, sticky='w')
-            lbl = tk.Label(row_frame, text="--", bg='#1e1e1e', fg='white',
+            lbl = tk.Label(row_frame, text="--", background='#1e1e1e', foreground='white',
                            font=('Consolas', 11), anchor='w')
             lbl.grid(row=0, column=1, sticky='ew', padx=6, pady=4)
             self.base_results[name] = lbl
 
         # 快速按钮
-        quick = tk.Frame(parent, bg=self.bg_color)
+        quick = tk.Frame(parent, background=self.bg_color)
         quick.pack(fill='x', padx=12, pady=(0, 8))
         for text, val in [("0", "0"), ("255", "255"), ("1024", "1024"),
                            ("65535", "65535"), ("3.14", "3.1415926535")]:
@@ -1059,8 +1059,8 @@ class MultiCalculator:
                 self.base_input.insert(0, v)
                 self.base_from.set("十进制")
                 self._do_baseconv()
-            tk.Button(quick, text=text, command=go, bg=self.btn_color, fg='white',
-                      relief='flat', cursor='hand2',
+            tk.Button(quick, text=text, command=go, background=self.btn_color, foreground='white',
+                      relief='solid', cursor='hand1',
                       font=('Microsoft YaHei', 10)).pack(side='left', padx=2, expand=True, fill='x')
 
         self._do_baseconv()
@@ -1147,48 +1147,48 @@ class MultiCalculator:
         parent.columnconfigure(0, weight=1)
         parent.rowconfigure(1, weight=1)
 
-        ctrl = tk.Frame(parent, bg=self.bg_color)
+        ctrl = tk.Frame(parent, background=self.bg_color)
         ctrl.grid(row=0, column=0, sticky='ew', padx=8, pady=6)
         ctrl.columnconfigure(1, weight=1)
 
-        tk.Label(ctrl, text="y =", bg=self.bg_color, fg='white',
+        tk.Label(ctrl, text="y =", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=0, column=0, padx=4)
-        self.plot_fn = tk.Entry(ctrl, bg='#1e1e1e', fg='white',
-                                insertbackground='white', relief='flat',
+        self.plot_fn = tk.Entry(ctrl, background='#1e1e1e', foreground='white',
+                                insertbackground='white', relief='solid',
                                 font=('Microsoft YaHei', 12))
         self.plot_fn.grid(row=0, column=1, sticky='ew', ipady=4)
         self.plot_fn.insert(0, "sin(x)")
 
-        tk.Label(ctrl, text="x范围:", bg=self.bg_color, fg='white',
+        tk.Label(ctrl, text="x范围:", background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=0, column=2, padx=4)
-        self.plot_xmin = tk.Entry(ctrl, bg='#1e1e1e', fg='white',
-                                  insertbackground='white', relief='flat',
+        self.plot_xmin = tk.Entry(ctrl, background='#1e1e1e', foreground='white',
+                                  insertbackground='white', relief='solid',
                                   font=('Microsoft YaHei', 11), width=6)
         self.plot_xmin.grid(row=0, column=3, ipady=4)
         self.plot_xmin.insert(0, "-10")
 
-        tk.Label(ctrl, text="~", bg=self.bg_color, fg='white').grid(row=0, column=4)
+        tk.Label(ctrl, text="~", background=self.bg_color, foreground='white').grid(row=0, column=4)
 
-        self.plot_xmax = tk.Entry(ctrl, bg='#1e1e1e', fg='white',
-                                  insertbackground='white', relief='flat',
+        self.plot_xmax = tk.Entry(ctrl, background='#1e1e1e', foreground='white',
+                                  insertbackground='white', relief='solid',
                                   font=('Microsoft YaHei', 11), width=6)
         self.plot_xmax.grid(row=0, column=5, ipady=4)
         self.plot_xmax.insert(0, "10")
 
         tk.Button(ctrl, text="🎨 绘制", command=self._do_plot,
-                  bg=self.btn_eq, fg='white', relief='flat', cursor='hand2',
+                  background=self.btn_eq, foreground='white', relief='solid', cursor='hand1',
                   font=('Microsoft YaHei', 11, 'bold')).grid(row=0, column=6, padx=4)
 
         # Canvas
-        self.canvas = tk.Canvas(parent, bg='#0a0a0a', highlightthickness=0,
+        self.canvas = tk.Canvas(parent, background='#0a0a0a', highlightthickness=0,
                                 cursor='crosshair')
         self.canvas.grid(row=1, column=0, sticky='nsew', padx=8, pady=(0, 8))
         self.canvas.bind('<Configure>', lambda e: self._do_plot())
 
         # 预设函数
-        preset = tk.Frame(parent, bg=self.bg_color)
+        preset = tk.Frame(parent, background=self.bg_color)
         preset.grid(row=2, column=0, sticky='ew', padx=8, pady=(0, 8))
-        tk.Label(preset, text="快速函数:", bg=self.bg_color, fg=self.accent_color,
+        tk.Label(preset, text="快速函数:", background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 10, 'bold')).pack(side='left', padx=4)
         for fn in ["sin(x)", "cos(x)", "tan(x)", "x**2", "x**3", "log(x)",
                    "exp(x)", "1/x", "sqrt(x)", "abs(x)"]:
@@ -1197,8 +1197,8 @@ class MultiCalculator:
                 self.plot_fn.insert(0, f)
                 self._do_plot()
             tk.Button(preset, text=fn, command=plot_fn,
-                      bg=self.btn_color, fg='white', relief='flat',
-                      cursor='hand2', font=('Microsoft YaHei', 9)).pack(side='left', padx=2)
+                      background=self.btn_color, foreground='white', relief='solid',
+                      cursor='hand1', font=('Microsoft YaHei', 9)).pack(side='left', padx=2)
 
         self._do_plot()
 
@@ -1317,38 +1317,38 @@ class MultiCalculator:
         parent.rowconfigure(2, weight=1)
 
         tk.Label(parent, text="📈 统计分析器",
-                 bg=self.bg_color, fg=self.accent_color,
+                 background=self.bg_color, foreground=self.accent_color,
                  font=('Microsoft YaHei', 14, 'bold')).grid(row=0, column=0,
                                                            pady=(12, 4))
         tk.Label(parent, text="输入数字(逗号/空格/换行分隔):",
-                 bg=self.bg_color, fg='white',
+                 background=self.bg_color, foreground='white',
                  font=('Microsoft YaHei', 11)).grid(row=1, column=0,
                                                     sticky='w', padx=12, pady=4)
 
-        self.stat_input = tk.Text(parent, bg='#1e1e1e', fg='white',
-                                  insertbackground='white', relief='flat',
+        self.stat_input = tk.Text(parent, background='#1e1e1e', foreground='white',
+                                  insertbackground='white', relief='solid',
                                   font=('Consolas', 11), height=4)
         self.stat_input.grid(row=2, column=0, sticky='nsew', padx=12, pady=4)
         self.stat_input.insert('1.0', "12 15 18 22 25 28 30 33 35 40\n5 8 12 15 20 22 25 28 30 35")
         self.stat_input.bind('<KeyRelease>', lambda e: self._do_stats())
 
         # 按钮
-        btn_bar = tk.Frame(parent, bg=self.bg_color)
+        btn_bar = tk.Frame(parent, background=self.bg_color)
         btn_bar.grid(row=3, column=0, sticky='ew', padx=12, pady=4)
         tk.Button(btn_bar, text="🎲 生成随机数", command=self._gen_random,
-                  bg=self.btn_color, fg='white', relief='flat', cursor='hand2',
+                  background=self.btn_color, foreground='white', relief='solid', cursor='hand1',
                   font=('Microsoft YaHei', 10)).pack(side='left', padx=2)
         tk.Button(btn_bar, text="🔢 连续数列", command=self._gen_seq,
-                  bg=self.btn_color, fg='white', relief='flat', cursor='hand2',
+                  background=self.btn_color, foreground='white', relief='solid', cursor='hand1',
                   font=('Microsoft YaHei', 10)).pack(side='left', padx=2)
         tk.Button(btn_bar, text="🧹 清空",
                   command=lambda: (self.stat_input.delete('1.0', tk.END),
                                    self._do_stats()),
-                  bg=self.btn_color, fg='white', relief='flat', cursor='hand2',
+                  background=self.btn_color, foreground='white', relief='solid', cursor='hand1',
                   font=('Microsoft YaHei', 10)).pack(side='left', padx=2)
 
         # 结果区
-        self.stat_results_frame = tk.Frame(parent, bg=self.bg_color)
+        self.stat_results_frame = tk.Frame(parent, background=self.bg_color)
         self.stat_results_frame.grid(row=4, column=0, sticky='nsew', padx=12, pady=8)
         self.stat_results_frame.columnconfigure(0, weight=1)
         self.stat_results_frame.columnconfigure(1, weight=1)
@@ -1365,23 +1365,23 @@ class MultiCalculator:
         for i, (name, key) in enumerate(metric_names):
             row = i // 2
             col = i % 2
-            cell = tk.Frame(self.stat_results_frame, bg='#1e1e1e')
+            cell = tk.Frame(self.stat_results_frame, background='#1e1e1e')
             cell.grid(row=row, column=col, sticky='nsew', padx=3, pady=3)
-            tk.Label(cell, text=name, bg='#1e1e1e', fg=self.accent_color,
+            tk.Label(cell, text=name, background='#1e1e1e', foreground=self.accent_color,
                      font=('Microsoft YaHei', 9, 'bold'), anchor='w').pack(
                 anchor='w', padx=8, pady=(4, 0))
-            lbl = tk.Label(cell, text="--", bg='#1e1e1e', fg='white',
+            lbl = tk.Label(cell, text="--", background='#1e1e1e', foreground='white',
                            font=('Consolas', 11, 'bold'), anchor='e')
             lbl.pack(anchor='e', padx=8, pady=(0, 4))
             self.stat_labels[key] = lbl
 
         # 排序后的数据
-        sorted_frame = tk.Frame(parent, bg=self.bg_color)
+        sorted_frame = tk.Frame(parent, background=self.bg_color)
         sorted_frame.grid(row=5, column=0, sticky='ew', padx=12, pady=(0, 8))
-        tk.Label(sorted_frame, text="📋 排序后:", bg=self.bg_color,
-                 fg=self.accent_color, font=('Microsoft YaHei', 10, 'bold')).pack(
+        tk.Label(sorted_frame, text="📋 排序后:", background=self.bg_color,
+                 foreground=self.accent_color, font=('Microsoft YaHei', 10, 'bold')).pack(
             anchor='w')
-        self.stat_sorted = tk.Label(sorted_frame, text="--", bg='#1e1e1e', fg='white',
+        self.stat_sorted = tk.Label(sorted_frame, text="--", background='#1e1e1e', foreground='white',
                                     font=('Consolas', 10), wraplength=500, justify='left',
                                     anchor='w')
         self.stat_sorted.pack(fill='x', pady=4, ipady=4, padx=4)
